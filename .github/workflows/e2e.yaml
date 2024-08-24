@@ -3,15 +3,6 @@ name: E2E Test
 on:
   push:
 
-permissions:
-  # デプロイ操作の許可
-  deployments: write
-  # アクションの操作の許可
-  # # 主にArtifact
-  actions: write
-  # プルリクエストの操作の許可
-  pull-requests: write
-
 concurrency:
   group: ${{ github.workflow }}-e2e-${{ github.ref }}
   cancel-in-progress: true
@@ -27,16 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: jdx/mise-action@v2
-      - name: Global Packages Install
-        shell: bash
-        run: npm i -g @antfu/ni
-      - name: Packages Install
-        shell: bash
-        run: ni
+      - run: npm i
 
       - name: Run Playwright
-        run: na playwright test -u
+        run: npx playwright test -u
         env:
           # Firefoxの問題を解決するための設定
           HOME: /root
